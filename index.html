@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Navbar</title>
+
+<style>
+
+/* ===== RESET ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+/* ===== TOP GREEN BAR ===== */
+.topbar{
+background:#18c26e;
+color:#000;
+padding:10px 15px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+font-size:14px;
+text-align:center;
+flex-wrap:wrap;
+}
+
+.learn-btn{
+background:#0f9f58;
+color:#fff;
+padding:6px 14px;
+border-radius:6px;
+text-decoration:none;
+font-weight:600;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;        /* remove top-bottom padding */
+height:70px;           /* FIXED navbar height */
+background:#0b1220;
+color:#fff;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+
+/* LOGO IMAGE */
+.logo img{
+    width: 180px;
+height:100px;
+}
+
+/* DESKTOP LINKS */
+.nav-links{
+display:flex;
+gap:30px;
+}
+
+.nav-links a{
+color:#cfd3dc;
+text-decoration:none;
+font-size:16px;
+transition:.3s;
+}
+
+.nav-links a:hover{
+color:white;
+}
+
+/* BUTTONS */
+.nav-buttons{
+display:flex;
+gap:12px;
+}
+
+.login{
+background:transparent;
+border:1px solid #aaa;
+color:white;
+padding:8px 16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.start{
+background:#3b5cff;
+border:none;
+color:white;
+padding:9px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+/* ===== HAMBURGER ===== */
+.hamburger{
+display:none;
+flex-direction:column;
+gap:5px;
+cursor:pointer;
+}
+
+.hamburger span{
+width:26px;
+height:3px;
+background:white;
+display:block;
+transition:.3s;
+}
+
+/* ===== MOBILE SIDE MENU ===== */
+.mobile-menu{
+position:fixed;
+top:0;
+right:-100%;
+width:100%;
+height:100vh;
+background:#0b1220;
+padding:25px 22px;
+transition:0.4s ease;
+z-index:2000;
+overflow-y:auto;
+}
+
+
+.mobile-menu.active{
+right:0;
+}
+
+.mobile-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.close{
+background:none;
+border:none;
+color:white;
+font-size:24px;
+cursor:pointer;
+}
+
+.mobile-buttons{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+}
+
+.mobile-links a{
+display:block;
+padding:14px 0;
+border-bottom:1px solid #1f2a44;
+color:#cfd3dc;
+text-decoration:none;
+font-size:16px;
+}
+
+/* OVERLAY */
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.55);
+opacity:0;
+visibility:hidden;
+transition:.3s;
+z-index:1500;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+
+.nav-links,
+.nav-buttons{
+display:none;
+}
+
+.hamburger{
+display:flex;
+}
+
+.navbar{
+padding:14px 20px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span><b>NEW: UX ANIMATION ESSENTIALS</b> Get notified whenever I publish a new project or article. Enter your email and stay connected!.</span>
+  <a href="404.html" class="learn-btn">LEARN MORE →</a>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="stacklylogo (2).webp" alt="logo">
+  </div>
+
+  <!-- DESKTOP MENU -->
+  <nav class="nav-links">
+    <a href="404.html">Learning</a>
+    <a href="404.html">Services</a>
+    <a href="404.html">About</a>
+    <a href="404.html">Blog</a>
+    <a href="404.html"> Team Training</a>
+  </nav>
+
+  <!-- BUTTONS -->
+  <div class="nav-buttons">
+   <a href="404.html"> <button class="login">Login</button></a>
+    <a href="404.html"><button class="start">Download CV</button></a>
+  </div>
+
+  <!-- HAMBURGER -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+
+  <div class="mobile-top">
+    <div class="logo"><img src="stacklylogo (2).webp" height="35"></div>
+    <button class="close" id="closeMenu">✕</button>
+  </div>
+
+  <div class="mobile-buttons">
+  <a href="404.html"> <button class="login">Login</button></a>
+  <a href="404.html"> <button class="start">Download CV</button></a>
+  </div>
+
+  <nav class="mobile-links">
+    <a href="404.html">Learning</a>
+    <a href="404.html">Community</a>
+    <a href="404.html">About</a>
+    <a href="404.html">Blog</a>
+    <a href="404.html"> Team Training</a>
+  </nav>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<script>
+
+/* HAMBURGER FUNCTION */
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const closeMenu = document.getElementById("closeMenu");
+const overlay = document.getElementById("overlay");
+
+/* OPEN MENU */
+hamburger.onclick = () => {
+    mobileMenu.classList.add("active");
+    overlay.classList.add("active");
+}
+
+/* CLOSE MENU */
+closeMenu.onclick = () => {
+    mobileMenu.classList.remove("active");
+    overlay.classList.remove("active");
+}
+
+/* CLICK OUTSIDE CLOSE */
+overlay.onclick = () => {
+    mobileMenu.classList.remove("active");
+    overlay.classList.remove("active");
+}
+
+</script>
+
+</body>
+</html>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#0c0c0c;
+}
+
+/* HERO SECTION */
+.hero{
+height:100vh;
+position:relative;
+color:white;
+display:flex;
+align-items:center;
+overflow:hidden;
+}
+
+/* BACKGROUND IMAGE */
+.hero::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url("fastticket.webp") center/cover no-repeat;
+filter:brightness(0.45);
+z-index:0;
+}
+
+/* DARK GRADIENT OVERLAY */
+.hero::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,rgba(0,0,0,0.85) 20%,rgba(0,0,0,0.2) 60%,rgba(0,0,0,0.85) 100%);
+z-index:1;
+}
+
+/* CONTENT WRAPPER */
+.hero-container{
+position:relative;
+z-index:2;
+width:100%;
+max-width:1250px;
+margin:auto;
+padding:0 60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* LEFT TEXT */
+.left{
+max-width:520px;
+}
+
+/* AVAILABLE BADGE */
+.badge{
+display:inline-flex;
+align-items:center;
+gap:8px;
+background:#1c1c1c;
+padding:8px 14px;
+border-radius:25px;
+font-size:13px;
+margin-bottom:25px;
+}
+
+.dot{
+width:8px;
+height:8px;
+background:#ff7a00;
+border-radius:50%;
+box-shadow:0 0 8px #ff7a00;
+}
+
+/* MAIN HEADING */
+.left h1{
+font-size:48px;
+font-weight:700;
+line-height:1.25;
+letter-spacing:.5px;
+}
+
+/* RIGHT SIDE */
+.right{
+max-width:360px;
+}
+
+.right p{
+color:#d2d2d2;
+line-height:1.7;
+margin-bottom:25px;
+}
+
+/* BUTTON */
+.cta{
+display:inline-flex;
+align-items:center;
+gap:14px;
+background:#ff7a00;
+color:white;
+padding:14px 26px;
+border-radius:40px;
+text-decoration:none;
+font-weight:600;
+transition:.35s;
+}
+
+.cta span{
+background:white;
+color:#ff7a00;
+width:34px;
+height:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+font-size:18px;
+font-weight:bold;
+}
+
+.cta:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 25px rgba(255,122,0,.5);
+}
+
+/* HUGE NAME TEXT */
+.big-name{
+position:absolute;
+bottom:-35px;
+left:50%;
+transform:translateX(-50%);
+font-size:240px;
+font-weight:900;
+letter-spacing:10px;
+z-index:1;
+white-space:nowrap;
+user-select:none;
+
+/* gradient highlight text */
+background:linear-gradient(
+90deg,
+rgba(255,255,255,0.05) 0%,
+rgba(255,255,255,0.75) 40%,
+rgba(255,255,255,0.05) 80%
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+/* soft glow */
+filter:drop-shadow(0 0 18px rgba(255,255,255,0.15));
+
+/* shine animation */
+animation:shine 5s linear infinite;
+}
+
+/* moving light effect */
+@keyframes shine{
+0%{
+background-position:-600px;
+}
+100%{
+background-position:600px;
+}
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+.hero{
+height:auto;
+padding:120px 0 160px;
+}
+
+.hero-container{
+flex-direction:column;
+text-align:left;
+gap:60px;
+padding:0 25px;
+}
+
+.left h1{
+font-size:34px;
+}
+
+.big-name{
+font-size:110px;
+bottom:-10px;
+}
+
+}
+
+@media(max-width:480px){
+
+.left h1{
+font-size:28px;
+}
+
+.big-name{
+font-size:80px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<section class="hero">
+
+<div class="hero-container">
+
+<!-- LEFT -->
+<div class="left">
+<div class="badge">
+<div class="dot"></div>
+Available for Work
+</div>
+
+<h1>
+Pavan  Associate<br>
+Software Engineer<br>
+in Bengaluru
+</h1>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+<p>
+Hi, Pavan NS – a Associate Software Engineer passionate about creating seamless digital experiences that connect and convert.
+</p>
+
+<a href="404.html" class="cta">
+<span>→</span>
+See my works
+</a>
+</div>
+
+</div>
+
+<div class="big-name">Pavan</div>
+
+</section>
+
+</body>
+</html>
+
+<!-- ABOUT SECTION -->
+<section class="about">
+
+<div class="about-container">
+
+<!-- IMAGE SIDE -->
+<div class="about-image">
+<div class="img-box">
+<img src="OIP.webp" alt="Pavan">
+</div>
+</div>
+
+<!-- TEXT SIDE -->
+<div class="about-content">
+
+<h5 class="small-title">ABOUT ME</h5>
+<h2>Pavan<br><span>Associate Software Engineer</span></h2>
+
+<p class="about-text">
+I am Pavan, an Associate Software Engineer passionate about developing responsive and user-friendly websites and web applications. 
+I specialize in HTML, CSS, JavaScript and modern UI design. I enjoy solving real-world problems through clean code, optimized performance, and creative interfaces. 
+My goal is to continuously improve my skills and build impactful digital products.
+</p>
+
+<!-- INFO BOXES -->
+<div class="info-grid">
+<div class="info-card">
+<h4>Experience</h4>
+<p>3+ Years Internship & Projects</p>
+</div>
+
+<div class="info-card">
+<h4>Projects</h4>
+<p>Portfolio, E-commerce, UI Landing Pages</p>
+</div>
+
+<div class="info-card">
+<h4>Location</h4>
+<p>India</p>
+</div>
+</div>
+
+<!-- SKILLS -->
+<div class="skills">
+
+<div class="skill">
+<div class="skill-title">
+<span>HTML</span><span>95%</span>
+</div>
+<div class="progress"><div class="bar html"></div></div>
+</div>
+
+<div class="skill">
+<div class="skill-title">
+<span>CSS</span><span>90%</span>
+</div>
+<div class="progress"><div class="bar css"></div></div>
+</div>
+
+<div class="skill">
+<div class="skill-title">
+<span>JavaScript</span><span>80%</span>
+</div>
+<div class="progress"><div class="bar js"></div></div>
+</div>
+
+<div class="skill">
+<div class="skill-title">
+<span>Responsive Design</span><span>85%</span>
+</div>
+<div class="progress"><div class="bar responsive"></div></div>
+</div>
+
+</div>
+
+</div>
+</div>
+</section>
+<style>
+    /* ABOUT SECTION */
+.about{
+background:#0c0c0c;
+padding:120px 8%;
+color:white;
+}
+
+.about-container{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+gap:70px;
+flex-wrap:wrap;
+}
+
+/* IMAGE */
+.about-image{
+flex:1;
+display:flex;
+justify-content:center;
+}
+
+.img-box{
+position:relative;
+width:320px;
+height:320px;
+border-radius:50%;
+padding:10px;
+background:linear-gradient(45deg,#ff7a00,#ffb347);
+animation:rotate 8s linear infinite;
+}
+
+.img-box img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:50%;
+border:6px solid #0c0c0c;
+}
+
+@keyframes rotate{
+0%{transform:rotate(0);}
+100%{transform:rotate(360deg);}
+}
+
+/* CONTENT */
+.about-content{
+flex:1;
+min-width:300px;
+}
+
+.small-title{
+color:#ff7a00;
+letter-spacing:3px;
+margin-bottom:10px;
+}
+
+.about-content h2{
+font-size:40px;
+margin-bottom:20px;
+}
+
+.about-content h2 span{
+color:#ff7a00;
+font-size:24px;
+font-weight:500;
+}
+
+.about-text{
+color:#cfcfcf;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+/* INFO CARDS */
+.info-grid{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:35px;
+}
+
+.info-card{
+background:#151515;
+padding:18px 22px;
+border-radius:12px;
+flex:1;
+min-width:150px;
+transition:.3s;
+border:1px solid #222;
+}
+
+.info-card:hover{
+transform:translateY(-6px);
+border-color:#ff7a00;
+box-shadow:0 10px 25px rgba(255,122,0,.25);
+}
+
+.info-card h4{
+color:#ff7a00;
+margin-bottom:6px;
+}
+
+/* SKILLS */
+.skill{
+margin-bottom:18px;
+}
+
+.skill-title{
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+font-size:14px;
+}
+
+.progress{
+height:8px;
+background:#1f1f1f;
+border-radius:10px;
+overflow:hidden;
+}
+
+.bar{
+height:100%;
+width:0;
+background:linear-gradient(90deg,#ff7a00,#ffb347);
+animation:fill 2s forwards;
+}
+
+.bar.html{width:95%;}
+.bar.css{width:90%;}
+.bar.js{width:80%;}
+.bar.responsive{width:85%;}
+
+@keyframes fill{
+from{width:0;}
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+.about{
+padding:90px 20px;
+}
+
+.about-container{
+flex-direction:column;
+text-align:center;
+}
+
+.about-content h2{
+font-size:30px;
+}
+
+.img-box{
+width:240px;
+height:240px;
+}
+
+}
+
+</style>
+<!-- PROJECTS SECTION -->
+<section class="projects">
+
+<div class="projects-container">
+
+<h5 class="section-small">MY WORK</h5>
+<h2 class="section-title">Featured Projects</h2>
+
+<div class="project-grid">
+
+<!-- PROJECT 1 -->
+<div class="project-card reveal">
+<div class="project-img">
+<img src="new11.webp">
+</div>
+<div class="project-info">
+<h3>E-commerce Website</h3>
+<p>Online shopping UI with cart, product page and responsive layout.</p>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+<!-- PROJECT 2 -->
+<div class="project-card reveal">
+<div class="project-img">
+<img src="new12.webp">
+</div>
+<div class="project-info">
+<h3>Portfolio Website</h3>
+<p>Personal developer portfolio with modern hero animations.</p>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+<!-- PROJECT 3 -->
+<div class="project-card reveal">
+<div class="project-img">
+<img src="new13.webp">
+</div>
+<div class="project-info">
+<h3>Landing Page UI</h3>
+<p>Business landing page design with responsive sections and CTA.</p>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+<!-- PROJECT 4 -->
+<div class="project-card reveal">
+<div class="project-img">
+<img src="new14.webp">
+</div>
+<div class="project-info">
+<h3>Dashboard UI</h3>
+<p>Admin dashboard layout with charts and interactive panels.</p>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+<style>
+    /* PROJECTS */
+.projects{
+background:#0c0c0c;
+padding:120px 8%;
+color:white;
+}
+
+.projects-container{
+max-width:1200px;
+margin:auto;
+text-align:center;
+}
+
+.section-small{
+color:#ff7a00;
+letter-spacing:3px;
+margin-bottom:10px;
+}
+
+.section-title{
+font-size:42px;
+margin-bottom:60px;
+}
+
+/* GRID */
+.project-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:35px;
+}
+
+/* CARD */
+.project-card{
+background:rgba(255,255,255,0.03);
+border-radius:18px;
+overflow:hidden;
+backdrop-filter:blur(6px);
+border:1px solid #1d1d1d;
+transition:.4s;
+opacity:0;
+transform:translateY(60px);
+}
+
+/* IMAGE */
+.project-img{
+overflow:hidden;
+}
+
+.project-img img{
+width:100%;
+height:260px;
+object-fit:cover;
+transition:.6s;
+}
+
+.project-card:hover img{
+transform:scale(1.12);
+}
+
+/* INFO */
+.project-info{
+padding:22px;
+text-align:left;
+}
+
+.project-info h3{
+margin-bottom:10px;
+color:#fff;
+}
+
+.project-info p{
+color:#bfbfbf;
+margin-bottom:18px;
+}
+
+/* BUTTON */
+.project-btn{
+display:inline-block;
+padding:10px 20px;
+border-radius:30px;
+border:2px solid #ff7a00;
+color:#ff7a00;
+text-decoration:none;
+transition:.3s;
+}
+
+.project-btn:hover{
+background:#ff7a00;
+color:#000;
+box-shadow:0 8px 20px rgba(255,122,0,.4);
+}
+
+/* HOVER CARD */
+.project-card:hover{
+transform:translateY(-10px);
+border-color:#ff7a00;
+box-shadow:0 15px 40px rgba(0,0,0,.6);
+}
+
+/* REVEAL ACTIVE */
+.project-card.active{
+opacity:1;
+transform:translateY(0);
+}
+
+/* MOBILE */
+@media(max-width:900px){
+.project-grid{
+grid-template-columns:1fr;
+}
+.section-title{
+font-size:30px;
+}
+}
+
+</style>
+<script>
+
+const observer = new IntersectionObserver((entries)=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("active");
+observer.unobserve(entry.target); // animate only once
+}
+});
+},{
+threshold:0.2
+});
+
+document.querySelectorAll('.reveal').forEach(el=>{
+observer.observe(el);
+});
+
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:#0c0c0c;color:white;overflow-x:hidden;}
+
+/* ---------------- HERO ---------------- */
+.hero{
+height:100vh;
+display:flex;
+align-items:center;
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:url("https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+filter:brightness(.45);
+z-index:0;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(90deg,rgba(0,0,0,.85) 20%,rgba(0,0,0,.2) 60%,rgba(0,0,0,.85) 100%);
+z-index:1;
+}
+
+.hero-container{
+position:relative;
+z-index:2;
+width:100%;
+max-width:1200px;
+margin:auto;
+padding:0 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.badge{
+background:#1a1a1a;
+padding:8px 14px;
+border-radius:25px;
+font-size:13px;
+display:inline-flex;
+gap:8px;
+margin-bottom:20px;
+}
+.dot{width:8px;height:8px;background:#ff7a00;border-radius:50%;box-shadow:0 0 8px #ff7a00;}
+
+.left h1{font-size:48px;line-height:1.25;}
+.right{max-width:360px;}
+.right p{color:#d2d2d2;margin-bottom:25px;}
+
+.cta{
+display:inline-flex;
+align-items:center;
+gap:14px;
+background:#ff7a00;
+padding:14px 26px;
+border-radius:40px;
+color:white;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+.cta span{
+background:white;color:#ff7a00;width:34px;height:34px;
+display:flex;align-items:center;justify-content:center;border-radius:50%;
+}
+.cta:hover{transform:translateY(-4px);box-shadow:0 12px 25px rgba(255,122,0,.5);}
+
+.big-name{
+position:absolute;
+bottom:-30px;
+left:50%;
+transform:translateX(-50%);
+font-size:200px;
+font-weight:900;
+letter-spacing:8px;
+background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.7),rgba(255,255,255,.05));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:shine 6s linear infinite;
+}
+@keyframes shine{0%{background-position:-600px;}100%{background-position:600px;}}
+
+/* ---------------- SECTIONS ---------------- */
+section{padding:110px 8%;}
+.section-title{font-size:40px;margin-bottom:50px;text-align:center;}
+.section-small{color:#ff7a00;text-align:center;letter-spacing:3px;margin-bottom:10px;}
+
+/* ---------------- ABOUT ---------------- */
+.about-container{max-width:1100px;margin:auto;display:flex;gap:60px;align-items:center;flex-wrap:wrap;}
+.img-box{
+width:260px;height:260px;border-radius:50%;
+padding:10px;background:linear-gradient(45deg,#ff7a00,#ffb347);
+animation:rotate 8s linear infinite;margin:auto;
+}
+.img-box img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:6px solid #0c0c0c;}
+@keyframes rotate{100%{transform:rotate(360deg);}}
+.about-text{color:#cfcfcf;line-height:1.8;margin-top:15px;}
+
+/* ---------------- PROJECTS ---------------- */
+.project-grid{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:30px;}
+.project-card{
+background:#131313;border-radius:16px;overflow:hidden;
+transition:.4s;opacity:0;transform:translateY(60px);
+}
+.project-card img{width:100%;height:240px;object-fit:cover;transition:.5s;}
+.project-card:hover img{transform:scale(1.1);}
+.project-info{padding:20px;}
+.project-btn{
+display:inline-block;margin-top:10px;
+padding:10px 18px;border-radius:25px;border:2px solid #ff7a00;
+color:#ff7a00;text-decoration:none;transition:.3s;
+}
+.project-btn:hover{background:#ff7a00;color:black;}
+
+/* ---------------- EXPERTISE ---------------- */
+.expertise-grid{max-width:1100px;margin:50px auto 0;display:grid;grid-template-columns:repeat(2,1fr);gap:30px;}
+.expert-card{
+background:#151515;padding:30px;border-radius:16px;
+opacity:0;transform:translateY(60px);transition:.5s;
+}
+.expert-card span{color:#ff7a00;font-size:14px;}
+.expert-card:hover{transform:translateY(-8px);border:1px solid #ff7a00;}
+
+/* ---------------- BLOG ---------------- */
+.blog-grid{max-width:1100px;margin:50px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+.blog-card{background:#141414;border-radius:16px;overflow:hidden;opacity:0;transform:translateY(60px);transition:.5s;}
+.blog-card img{width:100%;height:220px;object-fit:cover;transition:.5s;}
+.blog-card:hover img{transform:scale(1.1);}
+.blog-content{padding:20px;}
+.blog-content a{color:#ff7a00;text-decoration:none;font-weight:600;}
+
+/* reveal animation */
+.reveal.active{opacity:1;transform:translateY(0);}
+
+/* responsive */
+@media(max-width:900px){
+.hero{height:auto;padding:120px 0;}
+.hero-container{flex-direction:column;gap:50px;text-align:left;}
+.big-name{font-size:90px;bottom:-10px;}
+.project-grid,.expertise-grid,.blog-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+
+
+<!-- PROJECTS -->
+<section>
+<h5 class="section-small">MY WORK</h5>
+<h2 class="section-title">Featured Projects</h2>
+<div class="project-grid">
+
+<div class="project-card reveal">
+<img src="online1.webp">
+<div class="project-info">
+<h3>E-commerce Website</h3>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+<div class="project-card reveal">
+<img src="online2.webp">
+<div class="project-info">
+<h3>Portfolio Website</h3>
+<a href="404.html" class="project-btn">View Project</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- EXPERTISE -->
+<section class="expertise">
+<h5 class="section-small">WHAT I KNOW</h5>
+<h2 class="section-title">Technical Expertise</h2>
+
+<div class="expertise-grid">
+<div class="expert-card reveal">
+<h3>Frontend Development</h3>
+<p>HTML, CSS, responsive layouts and clean UI structure.</p>
+<span>HTML • CSS • Responsive</span>
+</div>
+
+<div class="expert-card reveal">
+<h3>JavaScript</h3>
+<p>DOM manipulation, events and interactive user interfaces.</p>
+<span>DOM • Events • ES6</span>
+</div>
+</div>
+</section>
+
+<!-- BLOG -->
+<section class="blog">
+<h5 class="section-small">ARTICLES</h5>
+<h2 class="section-title">Latest Blog</h2>
+
+<div class="blog-grid">
+<div class="blog-card reveal">
+<img src="online3.webp">
+<div class="blog-content">
+<h3>Responsive Web Design</h3>
+<a href="404.html">Read More →</a>
+</div>
+</div>
+
+<div class="blog-card reveal">
+<img src="online4.webp">
+<div class="blog-content">
+<h3>JavaScript Basics</h3>
+<a href="404.html">Read More →</a>
+</div>
+</div>
+
+<div class="blog-card reveal">
+<img src="online5.webp">
+<div class="blog-content">
+<h3>Improve Website Speed</h3>
+<a href="404.html">Read More →</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SMOOTH REVEAL SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("active");
+}
+});
+},{threshold:.18});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+});
+</script>
+<!-- EDUCATION & EXPERIENCE -->
+<section class="timeline-section">
+
+<h5 class="section-small">MY JOURNEY</h5>
+<h2 class="section-title">Education & Experience</h2>
+
+<div class="timeline">
+
+<!-- EDUCATION -->
+<div class="timeline-column">
+
+<h3 class="timeline-heading">Education</h3>
+
+<div class="timeline-box reveal">
+<span class="year">2020 - 2024</span>
+<h4>Bachelor of Computer Science</h4>
+<p>Completed graduation with strong knowledge in programming fundamentals, web development and software engineering concepts.</p>
+</div>
+
+<div class="timeline-box reveal">
+<span class="year">2018 - 2020</span>
+<h4>PUC (Science)</h4>
+<p>Studied Physics, Chemistry and Mathematics and built strong analytical and logical problem solving skills.</p>
+</div>
+
+<div class="timeline-box reveal">
+<span class="year">2017 - 2018</span>
+<h4>SSLC</h4>
+<p>Completed secondary education and developed interest in computers and technology.</p>
+</div>
+
+</div>
+
+<!-- EXPERIENCE -->
+<div class="timeline-column">
+
+<h3 class="timeline-heading">Work Experience</h3>
+
+<div class="timeline-box reveal">
+<span class="year">2024 - Present</span>
+<h4>Associate Software Engineer</h4>
+<p>Developing responsive websites, UI components and optimizing web performance using HTML, CSS and JavaScript.</p>
+</div>
+
+<div class="timeline-box reveal">
+<span class="year">2023 - 2024</span>
+<h4>Web Development Intern</h4>
+<p>Worked on real-world projects including landing pages, portfolio websites and responsive UI design.</p>
+</div>
+
+<div class="timeline-box reveal">
+<span class="year">2022 - 2023</span>
+<h4>Academic Projects</h4>
+<p>Built projects such as E-commerce website, personal portfolio and dashboard UI applications.</p>
+</div>
+
+</div>
+
+</div>
+</section>
+<style>
+    /* TIMELINE SECTION */
+.timeline-section{
+background:#0c0c0c;
+padding:120px 8%;
+color:white;
+}
+
+.timeline{
+max-width:1100px;
+margin:60px auto 0;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:50px;
+}
+
+/* column heading */
+.timeline-heading{
+margin-bottom:25px;
+color:#ff7a00;
+font-size:22px;
+}
+
+/* box */
+.timeline-box{
+background:#151515;
+padding:22px;
+border-radius:14px;
+border:1px solid #262626;
+margin-bottom:22px;
+position:relative;
+opacity:0;
+transform:translateY(60px);
+transition:.6s;
+}
+
+/* year badge */
+.year{
+display:inline-block;
+background:#ff7a00;
+color:white;
+font-size:12px;
+padding:5px 12px;
+border-radius:20px;
+margin-bottom:10px;
+}
+
+.timeline-box h4{
+margin-bottom:8px;
+}
+
+.timeline-box p{
+color:#bfbfbf;
+line-height:1.7;
+}
+
+/* hover effect */
+.timeline-box:hover{
+transform:translateY(-6px);
+border-color:#ff7a00;
+box-shadow:0 12px 30px rgba(255,122,0,.3);
+}
+
+/* reveal active */
+.timeline-box.active{
+opacity:1;
+transform:translateY(0);
+}
+
+/* mobile */
+@media(max-width:900px){
+.timeline{
+grid-template-columns:1fr;
+gap:30px;
+}
+}
+
+</style>
+
+
+<style>
+
+/* ===== RESET ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#0c0c0c;
+color:white;
+line-height:1.5;
+}
+
+/* ===== PAGE WRAPPER ===== */
+.wrapper{
+max-width:1150px;
+margin:80px auto;
+padding:0 20px;
+}
+
+/* ===== GRID ===== */
+.contact-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center;
+}
+
+/* ===== CARTOON IMAGE ===== */
+.illustration{
+display:flex;
+justify-content:center;
+}
+
+.avatar{
+width:260px;
+height:260px;
+background:linear-gradient(135deg,#ff7a00,#ffb347);
+border-radius:50%;
+position:relative;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+/* face */
+.avatar::before{
+content:"";
+position:absolute;
+top:70px;
+left:65px;
+width:130px;
+height:130px;
+background:#ffd6b3;
+border-radius:50%;
+}
+
+/* eyes */
+.eye{
+position:absolute;
+width:18px;
+height:18px;
+background:#222;
+border-radius:50%;
+top:120px;
+}
+.eye.left{left:100px;}
+.eye.right{right:100px;}
+
+/* smile */
+.smile{
+position:absolute;
+width:60px;
+height:30px;
+border-bottom:4px solid #333;
+border-radius:0 0 50px 50px;
+top:160px;
+left:100px;
+}
+
+/* ===== FORM ===== */
+.form-box{
+background:#151515;
+padding:35px;
+border-radius:18px;
+border:1px solid #262626;
+}
+
+.form-box h2{
+margin-bottom:20px;
+}
+
+/* fields */
+.field{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+margin-bottom:6px;
+color:#ff7a00;
+}
+
+input, textarea{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #333;
+background:#0c0c0c;
+color:white;
+outline:none;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+input:focus, textarea:focus{
+border-color:#ff7a00;
+box-shadow:0 0 8px rgba(255,122,0,.4);
+}
+
+.error{
+color:#ff4d4d;
+font-size:12px;
+margin-top:4px;
+}
+
+/* button */
+button{
+width:100%;
+height:48px;
+border:none;
+border-radius:30px;
+background:#ff7a00;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 25px rgba(255,122,0,.5);
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+.contact-grid{
+grid-template-columns:1fr;
+gap:40px;
+}
+.wrapper{
+margin:40px auto;
+}
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<div class="contact-grid">
+
+<!-- LEFT CARTOON -->
+<div class="illustration">
+<div class="avatar">
+<div class="eye left"></div>
+<div class="eye right"></div>
+<div class="smile"></div>
+</div>
+</div>
+
+<!-- RIGHT FORM -->
+<div class="form-box">
+
+<h2>Contact Me</h2>
+
+<form id="contactForm">
+
+<div class="field">
+<label>Name</label>
+<input type="text" id="name">
+<div class="error" id="nameError"></div>
+</div>
+
+<div class="field">
+<label>Phone Number</label>
+<input type="text" id="phone" maxlength="10">
+<div class="error" id="phoneError"></div>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input type="text" id="email">
+<div class="error" id="emailError"></div>
+</div>
+
+<div class="field">
+<label>Note</label>
+<textarea id="note"></textarea>
+</div>
+
+<button type="submit">Send Message</button>
+
+</form>
+
+</div>
+</div>
+</div>
+
+<script>
+
+const nameInput = document.getElementById("name");
+const phoneInput = document.getElementById("phone");
+const emailInput = document.getElementById("email");
+const form = document.getElementById("contactForm");
+
+/* ---------- BLOCK WRONG KEYBOARD TYPING ---------- */
+
+/* NAME : allow only letters */
+nameInput.addEventListener("keypress", function(e){
+const char = String.fromCharCode(e.which);
+if(!/[A-Za-z ]/.test(char)){
+e.preventDefault();
+}
+});
+
+/* PHONE : allow only digits */
+phoneInput.addEventListener("keypress", function(e){
+const char = String.fromCharCode(e.which);
+if(!/[0-9]/.test(char)){
+e.preventDefault();
+}
+});
+
+/* ---------- BLOCK PASTE ---------- */
+
+nameInput.addEventListener("paste", e => e.preventDefault());
+phoneInput.addEventListener("paste", e => e.preventDefault());
+
+/* ---------- LIMIT PHONE LENGTH ---------- */
+phoneInput.addEventListener("input", function(){
+if(this.value.length > 10){
+this.value = this.value.slice(0,10);
+}
+});
+
+/* ---------- FORM VALIDATION ---------- */
+form.addEventListener("submit", function(e){
+e.preventDefault();
+
+let valid = true;
+
+document.getElementById("nameError").textContent="";
+document.getElementById("phoneError").textContent="";
+document.getElementById("emailError").textContent="";
+
+/* NAME CHECK */
+if(!/^[A-Za-z ]+$/.test(nameInput.value.trim())){
+document.getElementById("nameError").textContent="Enter letters only";
+valid=false;
+}
+
+/* PHONE CHECK */
+if(!/^[0-9]{10}$/.test(phoneInput.value.trim())){
+document.getElementById("phoneError").textContent="Phone must be exactly 10 digits";
+valid=false;
+}
+
+/* EMAIL CHECK */
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())){
+document.getElementById("emailError").textContent="Enter valid email";
+valid=false;
+}
+
+/* SUCCESS REDIRECT */
+if(valid){
+window.location.href="404.html";
+}
+
+});
+</script>
+
+</body>
+</html>
+
+<!-- TESTIMONIALS -->
+<section class="testimonial-section">
+
+<h5 class="section-small">TESTIMONIALS</h5>
+<h2 class="section-title">What Clients Say</h2>
+
+<div class="testimonial-wrapper">
+
+<div class="testimonial-track">
+
+<div class="testimonial-card">
+<p>"Pavan created a clean and responsive website for our business. Very professional and fast work!"</p>
+<h4>- Rakesh Kumar</h4>
+<span>Small Business Owner</span>
+</div>
+
+<div class="testimonial-card">
+<p>"Excellent UI design and smooth animations. Highly recommended developer."</p>
+<h4>- Sneha R</h4>
+<span>Startup Founder</span>
+</div>
+
+<div class="testimonial-card">
+<p>"Our landing page performance improved a lot after his optimization."</p>
+<h4>- Arjun Shetty</h4>
+<span>Marketing Manager</span>
+</div>
+
+<div class="testimonial-card">
+<p>"Delivered the project on time and understood requirements perfectly."</p>
+<h4>- Priya Nair</h4>
+<span>Client</span>
+</div>
+
+</div>
+
+</div>
+</section>
+<style>
+    /* TESTIMONIALS */
+.testimonial-section{
+background:#0a0a0a;
+padding:120px 8%;
+text-align:center;
+}
+
+.testimonial-wrapper{
+overflow:hidden;
+max-width:900px;
+margin:60px auto 0;
+}
+
+.testimonial-track{
+display:flex;
+gap:30px;
+animation:slide 18s linear infinite;
+}
+
+.testimonial-card{
+min-width:100%;
+background:#151515;
+padding:35px;
+border-radius:18px;
+border:1px solid #262626;
+}
+
+.testimonial-card p{
+color:#cfcfcf;
+line-height:1.8;
+margin-bottom:18px;
+}
+
+.testimonial-card h4{
+color:#ff7a00;
+margin-bottom:5px;
+}
+
+.testimonial-card span{
+color:#aaa;
+font-size:14px;
+}
+
+@keyframes slide{
+0%{transform:translateX(0);}
+25%{transform:translateX(-100%);}
+50%{transform:translateX(-200%);}
+75%{transform:translateX(-300%);}
+100%{transform:translateX(0);}
+}
+
+</style>
+<!-- FAQ -->
+<section class="faq-section">
+
+<h5 class="section-small">QUESTIONS</h5>
+<h2 class="section-title">Frequently Asked Questions</h2>
+
+<div class="faq-container">
+
+<div class="faq-item">
+<button class="faq-question">Do you build responsive websites?</button>
+<div class="faq-answer">
+<p>Yes, all websites I develop are mobile friendly and work on all devices.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">Which technologies do you use?</button>
+<div class="faq-answer">
+<p>I mainly use HTML, CSS, JavaScript and modern UI design practices.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">Can you create a portfolio website?</button>
+<div class="faq-answer">
+<p>Yes, I create professional portfolio websites for students and developers.</p>
+</div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">How can I contact you?</button>
+<div class="faq-answer">
+<p>You can use the contact form below to send me a message.</p>
+</div>
+</div>
+
+</div>
+</section>
+<style>
+    /* FAQ */
+.faq-section{
+background:#0c0c0c;
+padding:120px 8%;
+}
+
+.faq-container{
+max-width:800px;
+margin:60px auto 0;
+}
+
+.faq-item{
+border-bottom:1px solid #262626;
+}
+
+.faq-question{
+width:100%;
+text-align:left;
+padding:18px;
+background:none;
+border:none;
+color:white;
+font-size:18px;
+cursor:pointer;
+position:relative;
+}
+
+.faq-question::after{
+content:"+";
+position:absolute;
+right:10px;
+color:#ff7a00;
+font-size:22px;
+}
+
+.faq-answer{
+max-height:0;
+overflow:hidden;
+transition:max-height .4s ease;
+padding:0 18px;
+}
+
+.faq-answer p{
+color:#bfbfbf;
+padding-bottom:18px;
+}
+
+/* active */
+.faq-item.active .faq-answer{
+max-height:200px;
+}
+
+.faq-item.active .faq-question::after{
+content:"−";
+}
+
+</style>
+<script>
+const faq=document.querySelectorAll(".faq-question");
+
+faq.forEach(btn=>{
+btn.addEventListener("click",()=>{
+btn.parentElement.classList.toggle("active");
+});
+});
+</script>
+<!-- VIDEO HERO -->
+<section class="video-hero">
+
+<!-- background video -->
+<video autoplay muted loop playsinline class="hero-video">
+<source src="WhatsApp Video 2025-11-27 at 8.08.14 PM.mp4" type="video/mp4">
+</video>
+
+<!-- dark overlay -->
+<div class="video-overlay"></div>
+
+<!-- hero content -->
+<div class="video-content">
+
+<h1 class="hero-title">
+Pavan<br>
+<span>Associate Software Engineer</span>
+</h1>
+
+<p class="hero-desc">
+I design and develop modern responsive websites with clean UI, smooth animations and performance optimized code.
+</p>
+
+<a href="404.html" class="hero-btn">View Portfolio</a>
+
+</div>
+</section>
+<style>
+    /* VIDEO HERO */
+.video-hero{
+position:relative;
+height:100vh;
+width:100%;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+}
+
+/* video */
+.hero-video{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+min-width:100%;
+min-height:100%;
+object-fit:cover;
+z-index:-2;
+}
+
+/* overlay */
+.video-overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.75));
+z-index:-1;
+}
+
+/* content */
+.video-content{
+max-width:800px;
+padding:20px;
+animation:fadeUp 1.2s ease forwards;
+}
+
+/* title */
+.hero-title{
+font-size:56px;
+font-weight:700;
+line-height:1.2;
+margin-bottom:18px;
+}
+
+.hero-title span{
+color:#ff7a00;
+font-size:26px;
+font-weight:500;
+}
+
+/* text */
+.hero-desc{
+color:#d0d0d0;
+line-height:1.7;
+margin-bottom:30px;
+}
+
+/* button */
+.hero-btn{
+display:inline-block;
+padding:14px 30px;
+border-radius:40px;
+background:#ff7a00;
+color:white;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+
+.hero-btn:hover{
+transform:translateY(-4px);
+box-shadow:0 14px 35px rgba(255,122,0,.6);
+}
+
+/* animation */
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* mobile */
+@media(max-width:768px){
+.hero-title{font-size:36px;}
+.hero-title span{font-size:18px;}
+.hero-desc{font-size:14px;}
+.video-hero{height:90vh;}
+}
+
+</style>
+<footer class="footer">
+
+<div class="footer-container">
+
+<!-- LOGO + ABOUT -->
+<div class="footer-col">
+<img src="stacklylogo (2).webp" class="footer-logo-img" alt="logo">
+
+<p class="footer-about">
+Associate Software Engineer building modern responsive websites and UI designs with clean and optimized code.
+</p>
+
+<div class="social-icons">
+
+<a href="404.html">
+<svg viewBox="0 0 24 24"><path d="M22 12A10 10 0 1 0 10.5 21.9v-7H8v-2.9h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.6v2h2.9l-.5 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+</a>
+
+<a href="404.html">
+<svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm6-1.8a1.2 1.2 0 1 1-1.2-1.2A1.2 1.2 0 0 1 18 5.7z"/></svg>
+</a>
+
+<a href="404.html">
+<svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 0 .02 5 2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zm7 0h3.6v1.7h.1c.5-.9 1.8-1.8 3.7-1.8 4 0 4.7 2.6 4.7 6v6.1h-4v-5.4c0-1.3 0-3-1.9-3s-2.2 1.5-2.2 2.9v5.5h-4z"/></svg>
+</a>
+
+<a href="404.html">
+<svg viewBox="0 0 24 24"><path d="M12 .5A12 12 0 0 0 0 12.6c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2.3c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.7-1.4-1.7-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.4-5.6-6.1 0-1.3.5-2.4 1.3-3.3-.1-.3-.6-1.6.1-3.2 0 0 1-.3 3.4 1.3A11.6 11.6 0 0 1 12 6.8c1 0 2 .1 3 .4 2.4-1.6 3.4-1.3 3.4-1.3.7 1.6.2 2.9.1 3.2.8.9 1.3 2 1.3 3.3 0 4.7-2.9 5.8-5.6 6.1.5.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 24 12.6 12 12 0 0 0 12 .5z"/></svg>
+</a>
+
+</div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="footer-col">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="404.html">Home</a></li>
+<li><a href="404.html">About</a></li>
+<li><a href="404.html">Projects</a></li>
+<li><a href="404.html">Contact</a></li>
+<li><a href="404.html">Learning</a></li>
+<li><a href="404.html">Team Learning </a></li>
+<li><a href="404.html">Services</a></li>
+<li><a href="404.html">Login</a></li>
+</ul>
+</div>
+
+<!-- CONTACT + MAP -->
+<div class="footer-col">
+<h3>Contact</h3>
+<p>Email: pavan@gmail.com</p>
+<p>Phone: +91 9876543210</p>
+
+<iframe class="map"
+src="https://maps.google.com/maps?q=bangalore&t=&z=13&ie=UTF8&iwloc=&output=embed">
+</iframe>
+</div>
+
+<!-- SUBSCRIBE -->
+<div class="footer-col">
+<h3>Subscribe</h3>
+<p>Enter email then click subscribe</p>
+
+<input type="text" id="subEmail" placeholder="Enter email">
+<button class="subBtn" onclick="subscribe()">Subscribe</button>
+<p id="subMsg" class="subMsg"></p>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+© 2026 Pavan Portfolio |
+<a href="404.html">Privacy Policy</a> |
+<a href="404.html">Terms & Conditions</a>
+</div>
+
+</footer>
+<style>
+    .footer{
+background:#070707;
+color:#ccc;
+margin-top:80px;
+}
+
+.footer-container{
+max-width:1200px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:40px;
+padding:60px 40px;
+}
+
+.footer-logo-img{
+width:150px;
+margin-bottom:15px;
+}
+
+.footer-about{
+line-height:1.6;
+}
+
+.footer-col h3{
+color:white;
+margin-bottom:15px;
+}
+
+/* links */
+.footer-col ul{
+list-style:none;
+padding:0;
+}
+.footer-col ul li{
+margin-bottom:10px;
+}
+.footer-col ul li a{
+color:#bbb;
+text-decoration:none;
+transition:.3s;
+}
+.footer-col ul li a:hover{
+color:#ff7a00;
+}
+
+/* social icons */
+.social-icons a{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:42px;
+height:42px;
+background:#151515;
+border-radius:50%;
+margin-right:10px;
+transition:.3s;
+}
+.social-icons svg{
+width:20px;
+height:20px;
+fill:white;
+}
+.social-icons a:hover{
+background:#ff7a00;
+transform:translateY(-4px);
+}
+.social-icons a:hover svg{
+fill:black;
+}
+
+/* map */
+.map{
+width:100%;
+height:130px;
+border:0;
+border-radius:10px;
+margin-top:10px;
+}
+
+/* subscribe */
+#subEmail{
+width:100%;
+height:40px;
+padding:10px;
+background:#0c0c0c;
+border:1px solid #333;
+color:white;
+border-radius:6px;
+margin-bottom:10px;
+}
+
+.subBtn{
+width:100%;
+height:40px;
+background:#ff7a00;
+border:none;
+color:white;
+border-radius:25px;
+cursor:pointer;
+}
+.subBtn:hover{
+box-shadow:0 10px 20px rgba(255,122,0,.5);
+}
+
+.subMsg{
+color:#ff4d4d;
+font-size:12px;
+margin-top:5px;
+}
+
+/* bottom */
+.footer-bottom{
+text-align:center;
+border-top:1px solid #222;
+padding:18px;
+}
+.footer-bottom a{
+color:#ff7a00;
+text-decoration:none;
+}
+
+/* ===== MOBILE FOOTER LEFT ALIGN ===== */
+@media(max-width:900px){
+
+.footer-container{
+grid-template-columns:1fr;
+text-align:left;
+justify-items:start;
+padding:50px 20px;
+}
+
+.footer-col{
+text-align:left;
+width:100%;
+}
+
+.footer-col h3{
+text-align:left;
+}
+
+.footer-col p{
+text-align:left;
+}
+
+.footer-col ul{
+padding-left:0;
+}
+
+.footer-col ul li{
+list-style:none;
+text-align:left;
+}
+
+.footer-bottom{
+text-align:left;
+padding-left:20px;
+}
+
+/* social icons also start */
+.social-icons{
+display:flex;
+justify-content:flex-start;
+align-items:center;
+gap:10px;
+}
+
+.social-icons a{
+margin:6px 6px 6px 0;
+}
+
+}
+
+</style>
+<script>
+function subscribe(){
+
+let email = document.getElementById("subEmail").value.trim();
+let msg = document.getElementById("subMsg");
+
+/* clear message */
+msg.textContent = "";
+
+/* empty check */
+if(email === ""){
+msg.textContent = "Please enter your email first";
+return;
+}
+
+/* email validation */
+let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!pattern.test(email)){
+msg.textContent = "Enter a valid email address";
+return;
+}
+
+/* success -> go to 404 page */
+window.location.href = "404.html";
+
+}
+</script>

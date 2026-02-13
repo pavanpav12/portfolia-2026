@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+background:radial-gradient(circle at top,#101728,#05070f 70%);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+}
+
+/* container */
+.container404{
+max-width:700px;
+padding:20px;
+position:relative;
+}
+
+/* big 404 text */
+.big404{
+font-size:150px;
+font-weight:800;
+letter-spacing:8px;
+background:linear-gradient(90deg,#ff7a00,#ffd27f,#ff7a00);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:glow 4s linear infinite;
+}
+
+/* glow animation */
+@keyframes glow{
+0%{filter:drop-shadow(0 0 5px #ff7a00);}
+50%{filter:drop-shadow(0 0 30px #ff7a00);}
+100%{filter:drop-shadow(0 0 5px #ff7a00);}
+}
+
+/* floating circle decorations */
+.circle{
+position:absolute;
+border-radius:50%;
+background:rgba(255,122,0,.25);
+animation:float 6s infinite ease-in-out;
+}
+
+.circle1{
+width:120px;height:120px;
+top:-40px;left:-60px;
+}
+
+.circle2{
+width:80px;height:80px;
+bottom:-30px;right:-50px;
+animation-delay:2s;
+}
+
+.circle3{
+width:50px;height:50px;
+top:40%;right:-70px;
+animation-delay:3s;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(0);}
+}
+
+/* message */
+h2{
+font-size:28px;
+margin-top:-20px;
+margin-bottom:15px;
+}
+
+p{
+color:#bbb;
+margin-bottom:35px;
+}
+
+/* button */
+.home-btn{
+display:inline-block;
+padding:14px 32px;
+background:#ff7a00;
+border-radius:40px;
+color:white;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+
+.home-btn:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 30px rgba(255,122,0,.6);
+}
+
+/* responsive */
+@media(max-width:600px){
+.big404{font-size:90px;}
+h2{font-size:22px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container404">
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+<div class="circle circle3"></div>
+
+<div class="big404">404</div>
+
+<h2>Oops! Page Not Found</h2>
+
+<p>
+The page you are looking for doesn’t exist or has been moved.
+Please return back to the homepage.
+</p>
+
+<a href="index.html" class="home-btn">Go Back Home</a>
+
+</div>
+
+</body>
+</html>
